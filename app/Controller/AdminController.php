@@ -122,9 +122,10 @@ class AdminController extends Controller
             return $result;
         }
         $uid = $info['uid'];
-        $userInfo = Admin::query()->where('uid', $uid)->first();
+        $mAdmin = new Admin();
+        $userInfo = $mAdmin->query()->where('uid', $uid)->first();
         $roles = explode(',', $userInfo['role']);
-        $userInfo['roles'] = $roles;
+        $userInfo['roles'] = $mAdmin->handleRole($roles);
         if ($userInfo) {
             $result["code"] = 20000;
             $result["data"] = $userInfo;
