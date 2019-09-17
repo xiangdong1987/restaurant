@@ -31,14 +31,13 @@ class AdminController extends Controller
 
     public function getsAdmin(int $id, ResponseInterface $response)
     {
-        $user = [];
         if ($id) {
             $user = Admin::query()->where('uid', $id)->first();
         } else {
             $user = Admin::query()->simplePaginate();
         }
 
-        return $response->json($user);
+        return $user;
     }
 
     public function addAdmin(RequestInterface $request, ResponseInterface $response)
@@ -66,7 +65,35 @@ class AdminController extends Controller
         }
         return $response->json($result);
     }
-    public function updateAdmin(int $uid){
 
+    public function updateAdmin(int $uid)
+    {
+
+    }
+
+    public function loginAdmin()
+    {
+        $username = $this->request->input('username');
+        $password = $this->request->input('password');
+        if (!$username) {
+            $result["code"] = 1000;
+            $result["message"] = "用户名不能为空";
+            return $result;
+        }
+        if (!$password) {
+            $result["code"] = 1001;
+            $result["message"] = "密码不能为空";
+            return $result;
+        }
+        //判断用户名密码
+        $user = Admin::query()->where('username', $username)->where('password', md5($password))->first();
+        if ($user) {
+            $result["code"] = 20000;
+            $result["token"] = "admin-token";
+        } else {
+            $result["code"] = 1003;
+            $result["message"] = "用户不存在";
+        }
+        return $result;
     }
 }

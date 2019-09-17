@@ -56,4 +56,15 @@ class ExampleTest extends HttpTestCase
         $this->assertSame('POST', $res['data']['method']);
         $this->assertSame('README.md', $res['data']['file']);
     }
+
+    public function testLogin()
+    {
+        $res = $this->post('/admin/login', [
+            'username' => "xiangdong",
+            'password' => "123",
+        ]);
+        $this->assertSame(20000, $res['code']);
+    }
+
+
 }
