@@ -18,6 +18,7 @@ Router::addRoute(['GET'], '/admin/{id}', 'App\Controller\AdminController@getsAdm
 Router::addRoute(['PUT'], '/admin/', 'App\Controller\AdminController@addAdmin');
 Router::addRoute(['POST'], '/admin/', 'App\Controller\AdminController@updateAdmin');
 Router::addRoute(['DELETE'], '/admin/{id}', 'App\Controller\AdminController@deleteAdmin');
-Router::addRoute(['POST','GET'], '/user/login', 'App\Controller\AdminController@loginAdmin');
+Router::addRoute(['POST', 'GET'], '/user/login', 'App\Controller\AdminController@loginAdmin');
+Router::addRoute(['GET'], '/user/info', 'App\Controller\AdminController@userInfo');
 
 

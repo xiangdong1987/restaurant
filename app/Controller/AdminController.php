@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Admin;
+use App\Model\Token;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
 
@@ -88,10 +89,47 @@ class AdminController extends Controller
         //判断用户名密码
         $user = Admin::query()->where('username', $username)->where('password', md5($password))->first();
         if ($user) {
-            $result["code"] = 20000;
-            $result["token"] = "admin-token";
+            //创建token
+            $now = time();
+            $expire_time = $now + 1800;
+            $token = md5($now . $user['uid'] . $expire_time);
+            $data['uid'] = $user['uid'];
+            $data['token'] = $token;
+            $data['expire_time'] = $expire_time;
+            $mToken = new Token();
+            if ($mToken->query()->updateOrInsert(['uid' => $data['uid']], $data)) {
+                $result["code"] = 20000;
+                $result['data']["token"] = $token;
+            } else {
+                $result["code"] = 1004;
+                $result["message"] = "创建token失败";
+            }
+
         } else {
             $result["code"] = 1003;
+            $result["message"] = "用户不存在";
+        }
+        return $result;
+    }
+
+    public function userInfo()
+    {
+        $token = $this->request->input('token');
+        $info = Token::query()->where('token', $token)->first();
+        if (!$info) {
+            $result["code"] = 1005;
+            $result["message"] = "token失效";
+            return $result;
+        }
+        $uid = $info['uid'];
+        $userInfo = Admin::query()->where('uid', $uid)->first();
+        $roles = explode(',', $userInfo['role']);
+        $userInfo['roles'] = $roles;
+        if ($userInfo) {
+            $result["code"] = 20000;
+            $result["data"] = $userInfo;
+        } else {
+            $result["code"] = 1006;
             $result["message"] = "用户不存在";
         }
         return $result;
