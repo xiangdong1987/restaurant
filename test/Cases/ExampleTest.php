@@ -59,7 +59,7 @@ class ExampleTest extends HttpTestCase
 
     public function testLogin()
     {
-        $res = $this->post('/admin/login', [
+        $res = $this->post('/user/login', [
             'username' => "xiangdong",
             'password' => "123",
         ]);

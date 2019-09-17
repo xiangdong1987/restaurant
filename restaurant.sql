@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50727
 File Encoding         : 65001
 
-Date: 2019-09-12 18:33:15
+Date: 2019-09-17 18:56:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,7 +23,10 @@ CREATE TABLE `admin` (
   `uid` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(200) DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
-  `role` int(11) DEFAULT NULL,
+  `avatar` varchar(100) DEFAULT NULL COMMENT '头像',
+  `name` varchar(50) DEFAULT NULL COMMENT '姓名',
+  `introduction` text COMMENT '介绍',
+  `role` varchar(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`uid`)
@@ -32,8 +35,8 @@ CREATE TABLE `admin` (
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
-INSERT INTO `admin` VALUES ('3', 'xiangdong', '123', '1', '2019-09-12 17:56:39', '2019-09-12 17:56:39');
-INSERT INTO `admin` VALUES ('4', 'xiangdong', '202cb962ac59075b964b07152d234b70', '1', '2019-09-12 17:59:08', '2019-09-12 17:59:08');
+INSERT INTO `admin` VALUES ('3', 'xiangdong1', '123', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', null, null, '1', '2019-09-12 17:56:39', '2019-09-12 17:56:39');
+INSERT INTO `admin` VALUES ('4', 'xiangdong', '202cb962ac59075b964b07152d234b70', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '项东东', '超级管理员', '1', '2019-09-12 17:59:08', '2019-09-12 17:59:08');
 
 -- ----------------------------
 -- Table structure for `dishes`
@@ -134,3 +137,21 @@ CREATE TABLE `tables` (
 -- ----------------------------
 -- Records of tables
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `token`
+-- ----------------------------
+DROP TABLE IF EXISTS `token`;
+CREATE TABLE `token` (
+  `uid` int(11) NOT NULL COMMENT '用户uid',
+  `token` varchar(100) DEFAULT NULL COMMENT 'token',
+  `expire_time` int(11) DEFAULT NULL COMMENT '过期时间',
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of token
+-- ----------------------------
+INSERT INTO `token` VALUES ('4', '7d535acdb10b2e62f315dc909687f890', '1568719528', '2019-09-17 18:28:02', '2019-09-17 18:28:02');
