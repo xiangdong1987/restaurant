@@ -42,7 +42,7 @@ abstract class Controller
 
     public function returnSuccess($data = null){
         $response = array(
-            'code' => 0
+            'code' => 20000
         );
         !is_null($data) && $response['data'] = $data;
         return $this->response->json($response);

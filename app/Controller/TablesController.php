@@ -28,12 +28,11 @@ class TablesController extends Controller
      * @RequestMapping(path="createTable", methods="get,post")
      */
     public function addTable(RequestInterface $request, ResponseInterface $response){
-        $tables = new Tables();
-        $tables->name = $request->input('name', '');
-        $tables->max_people = $request->input('max_people', 1);
-        $tables->type = $request->input('type', Tables::TYPE_normal);
-        $tables->status = Tables::STATUS_normal;
-        $res = $tables->save();
+        $data = $request->all();
+        $table = new Tables();
+        $table->fill($data);
+        $table->status = Tables::STATUS_normal;
+        $res = $table->save();
         return $res ? $this->returnSuccess() : $this->returnError(1, '新增失败');
     }
 
@@ -42,15 +41,11 @@ class TablesController extends Controller
      */
     public function updateTable(RequestInterface $request, ResponseInterface $response){
         $res = false;
-        $id         = $request->input('id', 0);
-        $name       = $request->input('name', '');
-        $type       = $request->input('type');
-        $max_people = $request->input('max_people', 1);
+        $id  = $request->input('id', 0);
         $table = Tables::query()->find($id);
         if($table){
-            !is_null($name)         && $table->name = $name;
-            !is_null($max_people)   && $table->max_people = $max_people;
-            !is_null($type)         && $table->type = $type;
+            $data = $request->all();
+            $table->fill($data);
             $res = $table->save();
         }
         return $res ? $this->returnSuccess() : $this->returnError(1, '更新失败');

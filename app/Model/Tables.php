@@ -33,7 +33,7 @@ class Tables extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['name','type','max_people'];
     /**
      * The attributes that should be cast to native types.
      *
