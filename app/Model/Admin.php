@@ -40,4 +40,20 @@ class Admin extends Model
      * @var array
      */
     protected $casts = ['uid' => 'integer'];
+
+    public static $roleMap = [
+        1 => "admin",
+        2 => "editor",
+    ];
+
+    public function handleRole($roleIds)
+    {
+        $data = [];
+        if ($roleIds) {
+            foreach ($roleIds as $id) {
+                $data[] = self::$roleMap[$id];
+            }
+        }
+        return $data;
+    }
 }
