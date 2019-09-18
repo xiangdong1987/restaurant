@@ -39,4 +39,21 @@ abstract class Controller
         $this->request = $container->get(RequestInterface::class);
         $this->response = $container->get(ResponseInterface::class);
     }
+
+    public function returnSuccess($data = null){
+        $response = array(
+            'code' => 20000
+        );
+        !is_null($data) && $response['data'] = $data;
+        return $this->response->json($response);
+    }
+
+    public function returnError($code = 400, $msg = null, $data = null){
+        $response = array(
+            'code' => $code
+        );
+        !is_null($msg) && $response['msg'] = $msg;
+        !is_null($data) && $response['data'] = $data;
+        return $this->response->json($response);
+    }
 }

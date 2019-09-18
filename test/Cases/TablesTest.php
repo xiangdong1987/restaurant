@@ -29,12 +29,38 @@ class TablesTest extends HttpTestCase
     public function testAddTable()
     {
         $params = array(
-            'name' => 'jay',
-            'people_num' => '2',
-            'max_people' => '4',
-            'type' => 2,
+            'name' => 'jay2',
+            'people_num' => '4',
+            'max_people' => '8',
+//            'type' => 1,
         );
         $res = $this->get('/tables/createTable', $params);
+        var_dump($res);
+    }
+
+    public function testUpdateTable()
+    {
+        $params = array(
+            'id' => '1',
+            'name' => 'jay1',
+            'people_num' => '3',
+            'max_people' => '5',
+            'type' => 1,
+        );
+        $res = $this->get('/tables/updateTable', $params);
+        var_dump($res);
+    }
+
+    public function testDelTable()
+    {
+        $params = array(
+            'id' => '1',
+            'name' => 'jay1',
+            'people_num' => '3',
+            'max_people' => '5',
+            'type' => 1,
+        );
+        $res = $this->get('/tables/deleteTable', $params);
         var_dump($res);
     }
 }

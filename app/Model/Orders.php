@@ -38,5 +38,5 @@ class Orders extends Model
      *
      * @var array
      */
-    protected $casts = ['id' => 'integer', 'table_id' => 'integer', 'status' => 'integer', 'dish_num' => 'integer', 'total_amount' => 'float', 'ctime' => 'integer', 'utime' => 'integer'];
+    protected $casts = ['id' => 'integer', 'table_id' => 'integer', 'people_num' => 'integer', 'status' => 'integer', 'dish_num' => 'integer', 'total_amount' => 'float', 'ctime' => 'integer', 'utime' => 'integer'];
 }
