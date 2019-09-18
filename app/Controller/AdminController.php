@@ -30,15 +30,22 @@ class AdminController extends Controller
         ];
     }
 
-    public function getsAdmin(int $id, ResponseInterface $response)
+    public function getsAdmin(int $id)
     {
+        $page = (int)$this->request->input('page', 1);
+        $limit = (int)$this->request->input('limit', 20);
         if ($id) {
             $user = Admin::query()->where('uid', $id)->first();
+            $result['code'] = 20000;
+            $result['data'] = $user;
         } else {
-            $user = Admin::query()->simplePaginate();
+            $user = Admin::query()->offset(($page - 1) * $limit)->limit($limit)->get();
+            $total = Admin::query()->count();
+            $result['code'] = 20000;
+            $result['data']['total'] = $total;
+            $result['data']['items'] = $user;
         }
-
-        return $user;
+        return $result;
     }
 
     public function addAdmin(RequestInterface $request, ResponseInterface $response)
@@ -133,6 +140,21 @@ class AdminController extends Controller
             $result["code"] = 1006;
             $result["message"] = "用户不存在";
         }
+        return $result;
+    }
+
+    public function logout()
+    {
+        $token = $this->request->getHeader('X-Token');
+        if (!$token) {
+            $result["code"] = 1006;
+            $result["message"] = "token不能为空";
+            return $result;
+        }
+        $mToken = new Token();
+        $mToken->query()->where('token', $token)->delete();
+        $result["code"] = 20000;
+        $result["data"] = 'success';
         return $result;
     }
 }

@@ -20,5 +20,6 @@ Router::addRoute(['POST'], '/admin/', 'App\Controller\AdminController@updateAdmi
 Router::addRoute(['DELETE'], '/admin/{id}', 'App\Controller\AdminController@deleteAdmin');
 Router::addRoute(['POST', 'GET'], '/user/login', 'App\Controller\AdminController@loginAdmin');
 Router::addRoute(['GET'], '/user/info', 'App\Controller\AdminController@userInfo');
+Router::addRoute(['POST'], '/user/logout', 'App\Controller\AdminController@logout');
 
 
