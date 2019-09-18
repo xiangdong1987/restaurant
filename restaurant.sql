@@ -85,6 +85,7 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单id',
   `table_id` int(11) DEFAULT NULL COMMENT '餐桌号',
+    `people_num` int(11) DEFAULT NULL COMMENT '用餐人数',
   `status` int(11) DEFAULT NULL COMMENT '订单状态',
   `dish_num` int(11) DEFAULT NULL,
   `total_amount` float DEFAULT NULL COMMENT '总金额',
@@ -124,11 +125,10 @@ CREATE TABLE `sub_orders` (
 DROP TABLE IF EXISTS `tables`;
 CREATE TABLE `tables` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '桌号',
-  `name` varchar(50) DEFAULT NULL COMMENT '名称',
-  `people_num` int(11) DEFAULT NULL COMMENT '用餐人数',
-  `max_people` int(11) DEFAULT NULL COMMENT '最大可用餐人数',
-  `type` int(11) DEFAULT NULL COMMENT '类型 1 普通  2 包间',
-  `status` int(11) DEFAULT NULL COMMENT '状态',
+  `name` varchar(50) not NULL DEFAULT '' COMMENT '名称',
+  `max_people` int(11) not NULL DEFAULT 1 COMMENT '最大可用餐人数',
+  `type` int(11) not NULL DEFAULT 1 COMMENT '类型 1 普通  2 包间',
+  `status` int(11) not NULL DEFAULT 1 COMMENT '状态 1-正常 2-删除',
   `ctime` int(11) DEFAULT NULL COMMENT '创建时间',
   `utime` int(11) DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)

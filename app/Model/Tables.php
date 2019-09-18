@@ -39,7 +39,7 @@ class Tables extends Model
      *
      * @var array
      */
-    protected $casts = ['id' => 'integer', 'people_num' => 'integer', 'max_people' => 'integer', 'type' => 'integer', 'status' => 'integer', 'ctime' => 'integer', 'utime' => 'integer'];
+    protected $casts = ['id' => 'integer', 'max_people' => 'integer', 'type' => 'integer', 'status' => 'integer', 'ctime' => 'integer', 'utime' => 'integer'];
 
     const TYPE_normal = 1, TYPE_room = 2;
     const STATUS_normal = 1, STATUS_del = 2;
