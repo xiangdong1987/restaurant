@@ -33,7 +33,7 @@ class Admin extends Model
      *
      * @var array
      */
-    protected $fillable = ['role', 'username', 'password'];
+    protected $fillable = ['role', 'username', 'password','name'];
     /**
      * The attributes that should be cast to native types.
      *
@@ -56,4 +56,28 @@ class Admin extends Model
         }
         return $data;
     }
+
+    public function getOne($uid)
+    {
+        $info = $this->query()->where('uid', $uid)->first();
+        $data = $info->getAttributes();
+        //去除密码
+        unset($data['password']);
+        return $data;
+    }
+
+    public function getByPage($page, $limit)
+    {
+        $result = [];
+        $list = $this->query()->offset(($page - 1) * $limit)->limit($limit)->get();
+        if ($list) {
+            foreach ($list as $one) {
+                $tmp = $one->getAttributes();
+                unset($tmp['password']);
+                $result[] = $tmp;
+            }
+        }
+        return $result;
+    }
+
 }

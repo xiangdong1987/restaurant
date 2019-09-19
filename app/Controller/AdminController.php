@@ -34,18 +34,16 @@ class AdminController extends Controller
     {
         $page = (int)$this->request->input('page', 1);
         $limit = (int)$this->request->input('limit', 20);
+        $mAdmin = new Admin();
         if ($id) {
-            $user = Admin::query()->where('uid', $id)->first();
-            $result['code'] = 20000;
-            $result['data'] = $user;
+            $data = $mAdmin->getOne($id);
         } else {
-            $user = Admin::query()->offset(($page - 1) * $limit)->limit($limit)->get();
+            $user = $mAdmin->getByPage($page, $limit);
             $total = Admin::query()->count();
-            $result['code'] = 20000;
-            $result['data']['total'] = $total;
-            $result['data']['items'] = $user;
+            $data['total'] = $total;
+            $data['items'] = $user;
         }
-        return $result;
+        return $this->returnSuccess($data);
     }
 
     public function addAdmin(RequestInterface $request, ResponseInterface $response)
@@ -53,12 +51,14 @@ class AdminController extends Controller
         $admin = new Admin();
         $data = $request->all();
         $data['password'] = md5($data['password']);
+        //检查用户是否存在
+        if ($admin->query()->where('username', $data['username'])->exists()) {
+            return $this->returnError(1011, "用户已经存在");
+        }
         if ($admin->fill($data)->save()) {
-            $result['code'] = 0;
-            return $response->json($result);
+            return $this->returnSuccess();
         } else {
-            $result['code'] = 1;
-            return $response->json($result);
+            return $this->returnError(1012, "创建管理失败");
         }
     }
 
@@ -74,9 +74,15 @@ class AdminController extends Controller
         return $response->json($result);
     }
 
-    public function updateAdmin(int $uid)
+    public function updateAdmin(RequestInterface $request)
     {
-
+        $data = $request->all();
+        $mAdmin = new Admin();
+        if ($mAdmin->query()->where('uid', $data['uid'])->update($data)) {
+            return $this->returnSuccess();
+        } else {
+            return $this->returnError(1010, "更新失败");
+        }
     }
 
     public function loginAdmin()

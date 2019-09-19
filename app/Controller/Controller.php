@@ -52,7 +52,7 @@ abstract class Controller
         $response = array(
             'code' => $code
         );
-        !is_null($msg) && $response['msg'] = $msg;
+        !is_null($msg) && $response['message'] = $msg;
         !is_null($data) && $response['data'] = $data;
         return $this->response->json($response);
     }
