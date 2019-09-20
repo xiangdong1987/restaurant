@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Admin;
+use App\Model\Tables;
 use App\Model\Token;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Hyperf\HttpServer\Contract\RequestInterface;
@@ -136,9 +137,12 @@ class AdminController extends Controller
         }
         $uid = $info['uid'];
         $mAdmin = new Admin();
-        $userInfo = $mAdmin->query()->where('uid', $uid)->first();
+        $userInfo = $mAdmin->query()->where('uid', $uid)->first()->toArray();
         $roles = explode(',', $userInfo['role']);
         $userInfo['roles'] = $mAdmin->handleRole($roles);
+
+        $userInfo['system']['table']['type_map'] = Tables::$typeMap;
+        $userInfo['system']['table']['status_map'] = Tables::$statusMap;
         if ($userInfo) {
             $result["code"] = 20000;
             $result["data"] = $userInfo;

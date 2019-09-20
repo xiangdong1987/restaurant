@@ -26,4 +26,5 @@ Router::addRoute(['POST'], '/user/logout', 'App\Controller\AdminController@logou
 //普通上传
 Router::addRoute(['POST'], '/common/upload', 'App\Controller\CommonController@upload');
 
-
+//餐桌
+Router::addRoute(['GET'], '/tables/{id}', 'App\Controller\TablesController@get');

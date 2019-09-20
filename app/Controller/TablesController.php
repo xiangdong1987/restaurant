@@ -21,13 +21,27 @@ class TablesController extends Controller
      */
     public function index(RequestInterface $request, ResponseInterface $response)
     {
-        return $this->returnSuccess(Tables::where('status', Tables::STATUS_normal)->paginate(10));
+        $mTable = new Tables();
+        $page = $mTable->query()->where('status', Tables::STATUS_normal)->paginate(10)->toArray();
+        $data['total'] = $page['total'];
+        $data['items'] = $mTable->formatList($page['data']);
+        return $this->returnSuccess($data);
+    }
+
+    public function get(int $id)
+    {
+        $mTable = new Tables();
+        $info = $mTable->query()->where('id', $id)->first()->toArray();
+        $data = $info;
+        return $this->returnSuccess($data);
+
     }
 
     /**
      * @RequestMapping(path="createTable", methods="get,post")
      */
-    public function addTable(RequestInterface $request, ResponseInterface $response){
+    public function addTable(RequestInterface $request, ResponseInterface $response)
+    {
         $data = $request->all();
         $table = new Tables();
         $table->fill($data);
@@ -39,11 +53,12 @@ class TablesController extends Controller
     /**
      * @RequestMapping(path="updateTable", methods="get,post")
      */
-    public function updateTable(RequestInterface $request, ResponseInterface $response){
+    public function updateTable(RequestInterface $request, ResponseInterface $response)
+    {
         $res = false;
-        $id  = $request->input('id', 0);
+        $id = $request->input('id', 0);
         $table = Tables::query()->find($id);
-        if($table){
+        if ($table) {
             $data = $request->all();
             $table->fill($data);
             $res = $table->save();
@@ -54,11 +69,12 @@ class TablesController extends Controller
     /**
      * @RequestMapping(path="deleteTable", methods="get,post")
      */
-    public function deleteTable(RequestInterface $request, ResponseInterface $response){
-        $res    = false;
-        $id     = $request->input('id', 0);
-        $table  = Tables::query()->find($id);
-        if($table) {
+    public function deleteTable(RequestInterface $request, ResponseInterface $response)
+    {
+        $res = false;
+        $id = $request->input('id', 0);
+        $table = Tables::query()->find($id);
+        if ($table) {
             $table->status = Tables::STATUS_del;
             $res = $table->save();
         }
