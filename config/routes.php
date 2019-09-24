@@ -28,3 +28,5 @@ Router::addRoute(['POST'], '/common/upload', 'App\Controller\CommonController@up
 
 //餐桌
 Router::addRoute(['GET'], '/tables/{id}', 'App\Controller\TablesController@get');
+//菜品
+Router::addRoute(['GET'], '/dishes/{id}', 'App\Controller\DishesController@get');

@@ -140,9 +140,9 @@ class AdminController extends Controller
         $userInfo = $mAdmin->query()->where('uid', $uid)->first()->toArray();
         $roles = explode(',', $userInfo['role']);
         $userInfo['roles'] = $mAdmin->handleRole($roles);
-
-        $userInfo['system']['table']['type_map'] = Tables::$typeMap;
-        $userInfo['system']['table']['status_map'] = Tables::$statusMap;
+        $table = new Tables();
+        $userInfo['system']['table']['type_map'] = $table->getTypeOption();
+        $userInfo['system']['table']['status_map'] = $table->getStatusOption();
         if ($userInfo) {
             $result["code"] = 20000;
             $result["data"] = $userInfo;

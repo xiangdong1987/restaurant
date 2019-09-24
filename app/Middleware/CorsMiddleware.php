@@ -19,7 +19,7 @@ class CorsMiddleware implements MiddlewareInterface
             ->withHeader('Access-Control-Allow-Credentials', 'true')
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS,PUT')
             // Headers 可以根据实际情况进行改写。
-            ->withHeader('Access-Control-Allow-Headers', 'DNT,Keep-Alive,User-Agent,Cache-Control,Content-Type,Authorization,x-token,X-Token');
+            ->withHeader('Access-Control-Allow-Headers', 'DNT,Keep-Alive,User-Agent,Cache-Control,Content-Type,Authorization,x-token,X-Token,x-requested-with');
 
         Context::set(ResponseInterface::class, $response);
 

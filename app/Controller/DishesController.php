@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Model\Dishes;
 use App\Model\Tables;
 use Hyperf\HttpServer\Annotation\Controller as AnnoController;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -14,61 +15,67 @@ use Hyperf\HttpServer\Contract\ResponseInterface;
 /**
  * @AnnoController()
  */
-class TablesController extends Controller
+class DishesController extends Controller
 {
     /**
-     * @GetMapping(path="index")
+     * @GetMapping(path="list")
      */
-    public function index(RequestInterface $request, ResponseInterface $response)
+    public function list()
     {
-        $mTable = new Tables();
-        $page = $mTable->query()->whereNotIn('status', [Tables::STATUS_del])->paginate(10)->toArray();
+        $mDishes = new Dishes();
+        $page = $mDishes->query()->paginate(10)->toArray();
         $data['total'] = $page['total'];
-        $data['items'] = $mTable->formatList($page['data']);
+        $data['items'] = $mDishes->formatList($page['data']);
         return $this->returnSuccess($data);
     }
 
     public function get(int $id)
     {
-        $mTable = new Tables();
-        $info = $mTable->query()->where('id', $id)->first()->toArray();
+        $model = new Dishes();
+        $info = $model->query()->where('id', $id)->first()->toArray();
         $data = $info;
         return $this->returnSuccess($data);
 
     }
 
     /**
-     * @RequestMapping(path="createTable", methods="get,post")
+     * @RequestMapping(path="create", methods="get,post")
+     * @param RequestInterface $request
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function addTable(RequestInterface $request, ResponseInterface $response)
+    public function add(RequestInterface $request)
     {
         $data = $request->all();
-        $table = new Tables();
-        $table->fill($data);
-        $table->status = Tables::STATUS_normal;
-        $res = $table->save();
+        $model = new Dishes();
+        $model->fill($data);
+        $res = $model->save();
         return $res ? $this->returnSuccess() : $this->returnError(1, '新增失败');
     }
 
     /**
-     * @RequestMapping(path="updateTable", methods="get,post")
+     * @RequestMapping(path="update", methods="get,post")
+     * @param RequestInterface $request
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateTable(RequestInterface $request, ResponseInterface $response)
+    public function updateTable(RequestInterface $request)
     {
         $res = false;
         $id = $request->input('id', 0);
-        $table = Tables::query()->find($id);
-        if ($table) {
+        $model = new Dishes();
+        $model = $model->query()->find($id);
+        if ($model) {
             $data = $request->all();
-            $res = $table->query()->where('id', $id)->update($data);
+            $res = $model->query()->where('id', $id)->update($data);
         }
         return $res ? $this->returnSuccess() : $this->returnError(1, '更新失败');
     }
 
     /**
-     * @RequestMapping(path="deleteTable", methods="get,post")
+     * @RequestMapping(path="delete", methods="get,post")
+     * @param RequestInterface $request
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteTable(RequestInterface $request, ResponseInterface $response)
+    public function deleteTable(RequestInterface $request)
     {
         $res = false;
         $id = $request->input('id', 0);

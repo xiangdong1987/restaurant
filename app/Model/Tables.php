@@ -45,14 +45,12 @@ class Tables extends Model
 
     const TYPE_normal = 1, TYPE_room = 2;
     const STATUS_normal = 1, STATUS_del = 2;
-//    const CREATED_AT = 'ctime';
-//    const UPDATED_AT = 'utime';
-//    protected $dateFormat = 'U';
 
     public static $typeMap = [
         1 => "餐桌",
         2 => "包间"
     ];
+
     public static $statusMap = [
         1 => "正常",
         2 => "废除",
@@ -60,6 +58,29 @@ class Tables extends Model
         4 => "就餐中",
         5 => "空闲",
     ];
+
+    public function getTypeOption()
+    {
+        return $this->handleOption(self::$typeMap);
+    }
+
+    public function getStatusOption()
+    {
+        return $this->handleOption(self::$statusMap);
+    }
+
+    public function handleOption($data)
+    {
+        $result = [];
+        if ($data) {
+            foreach ($data as $key => $text) {
+                $tmp["key"] = $key;
+                $tmp["text"] = $text;
+                $result[] = $tmp;
+            }
+        }
+        return $result;
+    }
 
     public function formatList($data)
     {
