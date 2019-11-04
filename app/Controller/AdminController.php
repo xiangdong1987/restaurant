@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Model\Admin;
+use App\Model\Dishes;
 use App\Model\Tables;
 use App\Model\Token;
 use Hyperf\HttpServer\Contract\ResponseInterface;
@@ -141,8 +142,12 @@ class AdminController extends Controller
         $roles = explode(',', $userInfo['role']);
         $userInfo['roles'] = $mAdmin->handleRole($roles);
         $table = new Tables();
+        $dish = new Dishes();
         $userInfo['system']['table']['type_map'] = $table->getTypeOption();
         $userInfo['system']['table']['status_map'] = $table->getStatusOption();
+        $userInfo['system']['dish']['status_map'] = $dish->getStatusOption();
+        $userInfo['system']['dish']['cate_map'] = $dish->getCateOption();
+
         if ($userInfo) {
             $result["code"] = 20000;
             $result["data"] = $userInfo;
