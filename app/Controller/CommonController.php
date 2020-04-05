@@ -19,7 +19,7 @@ class CommonController extends Controller
 {
     public function upload()
     {
-        $url = "http://192.168.112.20:9501";
+        $url = "http://localhost:9501";
         if ($this->request->hasFile('file')) {
             $file = $this->request->file('file');
             if ($file->isValid()) {
@@ -27,7 +27,7 @@ class CommonController extends Controller
                 $path = $file->getPath();
                 $ext = $extension = $file->getExtension();
                 $name = $now . "_" . md5($path) . "." . $ext;
-                $file->moveTo("./static/" . $name);
+                $file->moveTo("/data/restaurant/static/" . $name);
                 if ($file->isMoved()) {
                     return $this->returnSuccess(['url' => $url . "/" . $name]);
                 } else {

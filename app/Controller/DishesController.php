@@ -26,6 +26,11 @@ class DishesController extends Controller
         $page = $mDishes->query()->paginate(10)->toArray();
         $data['total'] = $page['total'];
         $data['items'] = $mDishes->formatList($page['data']);
+        //获取全部餐桌
+        $tableModel=new Tables();
+        $tables=$tableModel->query()->select(['id','name'])->get()->toArray();
+        $tables=array_column($tables,'name','id');
+        $data['tables']=$tableModel->handleOption($tables);
         return $this->returnSuccess($data);
     }
 
@@ -57,7 +62,7 @@ class DishesController extends Controller
      * @param RequestInterface $request
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateTable(RequestInterface $request)
+    public function update(RequestInterface $request)
     {
         $res = false;
         $id = $request->input('id', 0);
@@ -65,6 +70,7 @@ class DishesController extends Controller
         $model = $model->query()->find($id);
         if ($model) {
             $data = $request->all();
+            $data['imgs']=trim($data['imgs'],',');
             $res = $model->query()->where('id', $id)->update($data);
         }
         return $res ? $this->returnSuccess() : $this->returnError(1, '更新失败');

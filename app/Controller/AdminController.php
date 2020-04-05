@@ -147,6 +147,7 @@ class AdminController extends Controller
         $userInfo['system']['table']['status_map'] = $table->getStatusOption();
         $userInfo['system']['dish']['status_map'] = $dish->getStatusOption();
         $userInfo['system']['dish']['cate_map'] = $dish->getCateOption();
+        $userInfo['system']['upload']['url'] = "http://localhost:9501/common/upload";
 
         if ($userInfo) {
             $result["code"] = 20000;
